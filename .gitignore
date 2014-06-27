@@ -1,0 +1,5 @@
+*.classpath
+YourFavApps/.project
+YourFavApps/bin
+YourFavApps/gen
+YourFavApps/libs
