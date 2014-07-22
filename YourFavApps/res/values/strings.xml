@@ -2,5 +2,8 @@
 
     <string name="app_name">Your Fav Apps</string>
     <string name="settings">Settings</string>
+    <string name="controlling_camera">Controlling Camera</string>
+    <string name="from_system">System Camera</string>
+    <string name="from_custom_camera">Custom Camera</string>
 
 </resources>

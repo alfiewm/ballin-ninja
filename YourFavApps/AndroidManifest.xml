@@ -7,6 +7,13 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <!-- if you just want to save the image in your private photo directory and you'are using >= 4.4, this permission is no longer needed -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -20,7 +27,15 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity
+            android:name="com.mengwang.ui.activity.UsingCameraActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

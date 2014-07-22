@@ -1,6 +1,7 @@
 package com.mengwang.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,7 +17,9 @@ public class FavMainActivity extends Activity {
 
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.settings:
+		case R.id.control_camera:
+			Intent it = new Intent(this, UsingCameraActivity.class);
+			startActivity(it);
 			break;
 		default:
 			break;
