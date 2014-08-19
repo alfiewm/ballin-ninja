@@ -12,4 +12,10 @@
         android:onClick="onClick"
         android:text="@string/settings" />
 
+    <TextView
+        android:id="@+id/running_lists"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/settings" />
+
 </RelativeLayout>
