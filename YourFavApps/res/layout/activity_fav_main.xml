@@ -14,27 +14,31 @@
         android:text="@string/controlling_camera" />
 
     <Button
-        android:id="@+id/from_system"
+        android:id="@+id/animation_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/to_be_continue" />
+        android:onClick="onClick"
+        android:text="@string/animation_test" />
 
     <Button
         android:id="@+id/customize_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onClick"
         android:text="@string/to_be_continue" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onClick"
         android:text="@string/to_be_continue" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onClick"
         android:text="@string/to_be_continue" />
 
 </LinearLayout>

@@ -37,6 +37,8 @@
         <activity
             android:name="com.mengwang.ui.activity.UsingCameraActivity"
             android:screenOrientation="portrait" />
+        <activity android:name="com.mengwang.ui.activity.AnimationTestActivity" >
+        </activity>
     </application>
 
 </manifest>

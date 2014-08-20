@@ -1,10 +1,11 @@
 package com.mengwang.ui.view;
 
-
-import android.animation.LayoutTransition;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,7 +15,8 @@ import com.mengwang.guessyourfav.R;
 /**
  * Filename: StatusBar.java
  * 
- * Description: Custom view for managing photo approval status bar and driver's license status bar
+ * Description: Custom view for managing photo approval status bar and driver's
+ * license status bar
  * 
  * Created Date: June 17, 2014
  * 
@@ -41,6 +43,10 @@ public class StatusBar extends RelativeLayout {
 	private boolean isPhotoStatusSet = false;
 	private boolean isDLStatusSet = false;
 	private static boolean isFold = false;
+	private Animation inAnimation;
+	private Animation outAnimation;
+	private Animation upAnimation;
+	private Animation downAnimation;
 
 	private enum FoldStatus {
 		NONE, FOLD, UNFOLD
@@ -48,26 +54,27 @@ public class StatusBar extends RelativeLayout {
 
 	public StatusBar(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// system animation works pretty well here, can also set animateLayoutChanges attributes in xml file
-		LayoutTransition lt = new LayoutTransition();
-		setLayoutTransition(lt);
+		inAnimation = AnimationUtils.loadAnimation(context, R.anim.appear);
+		outAnimation = AnimationUtils.loadAnimation(context, R.anim.disappear);
+		upAnimation = AnimationUtils.loadAnimation(context, R.anim.up);
+		downAnimation = AnimationUtils.loadAnimation(context, R.anim.down);
 	}
 
-	// this method must be called before any action took on this view
+	// this method must be called before any action took on this view, or use property animator
 	public void initViews() {
 		photoStatusBar = findViewById(R.id.photo_status_bar);
 		photoStatusBar.setVisibility(View.GONE);
-		photoStatusTextView = (TextView)findViewById(R.id.photo_status_message);
+		photoStatusTextView = (TextView) findViewById(R.id.photo_status_message);
 		photoDivider = findViewById(R.id.photo_status_divider);
-		photoButton = (TextView)findViewById(R.id.photo_status_button);
+		photoButton = (TextView) findViewById(R.id.photo_status_button);
 
 		dlStatusBar = findViewById(R.id.dl_status_bar);
 		dlStatusBar.setVisibility(View.GONE);
-		dlStatusTextView = (TextView)findViewById(R.id.dl_status_message);
+		dlStatusTextView = (TextView) findViewById(R.id.dl_status_message);
 		dlDivider = findViewById(R.id.dl_status_divider);
-		dlButton = (TextView)findViewById(R.id.dl_status_button);
+		dlButton = (TextView) findViewById(R.id.dl_status_button);
 
-		foldButton = (ImageView)findViewById(R.id.fold_button);
+		foldButton = (ImageView) findViewById(R.id.fold_button);
 		foldButton.setVisibility(View.GONE);
 		foldButton.setOnClickListener(new OnClickListener() {
 
@@ -102,13 +109,65 @@ public class StatusBar extends RelativeLayout {
 
 	private void unFoldViews() {
 		isFold = false;
-		dlStatusBar.setVisibility(View.VISIBLE);
+		// maybe set fixed height? or linear layout or 
+		upAnimation.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				dlStatusBar.startAnimation(inAnimation);
+				dlStatusBar.setVisibility(View.VISIBLE);
+			}
+		});
+		photoStatusBar.startAnimation(upAnimation);
 		foldButton.setImageResource(R.drawable.btn_fold);
 	}
 
 	private void foldViews() {
 		isFold = true;
-		dlStatusBar.setVisibility(View.GONE);
+		outAnimation.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				downAnimation.setAnimationListener(new AnimationListener() {
+					
+					@Override
+					public void onAnimationStart(Animation animation) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						// TODO Auto-generated method stub
+						dlStatusBar.setVisibility(View.GONE);
+					}
+				});
+				photoStatusBar.startAnimation(downAnimation);
+			}
+		});
+		dlStatusBar.startAnimation(outAnimation);
 		foldButton.setImageResource(R.drawable.btn_unfold);
 	}
 

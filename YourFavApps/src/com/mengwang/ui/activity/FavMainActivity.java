@@ -21,6 +21,9 @@ public class FavMainActivity extends Activity {
 			Intent it = new Intent(this, UsingCameraActivity.class);
 			startActivity(it);
 			break;
+		case R.id.animation_test:
+			startActivity(new Intent(this, AnimationTestActivity.class));
+			break;
 		default:
 			break;
 		}
