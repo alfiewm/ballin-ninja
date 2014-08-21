@@ -12,18 +12,6 @@ import android.widget.TextView;
 
 import com.mengwang.guessyourfav.R;
 
-/**
- * Filename: StatusBar.java
- * 
- * Description: Custom view for managing photo approval status bar and driver's
- * license status bar
- * 
- * Created Date: June 17, 2014
- * 
- * Author : mengwang
- * 
- * Copyright (C) MicroStrategy Incorporated 2014 All Rights Reserved
- */
 public class StatusBar extends RelativeLayout {
 
 	// photo status views
