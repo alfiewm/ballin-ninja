@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.mengwang.ui.activity.PocketAnimActivity" >
+
+    <TextView
+        android:id="@+id/logo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:fontFamily="sans-serif-light"
+        android:text="pocket"
+        android:textSize="60sp" />
+
+    <TextView
+        android:id="@+id/sign_up_with_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="#ff0000"
+        android:gravity="center"
+        android:minWidth="200dp"
+        android:padding="10dp"
+        android:text="Sign Up with Google"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/login_with_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="#ff0000"
+        android:gravity="center"
+        android:minWidth="200dp"
+        android:padding="10dp"
+        android:text="Log In with Google"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/sign_up_with_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sign_up_with_google"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="#eeeeee"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:minWidth="200dp"
+        android:padding="10dp"
+        android:text="Sign up with Email"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/loggin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sign_up_with_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:fontFamily="sans-serif-light"
+        android:padding="15dp"
+        android:text="login"
+        android:textSize="20sp" />
+
+</RelativeLayout>
