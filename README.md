@@ -1,3 +1,3 @@
 ballin-ninja
 ============
-For test use.
+For test use only...
