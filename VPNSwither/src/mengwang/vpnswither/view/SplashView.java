@@ -101,7 +101,7 @@ public class SplashView extends View {
 
 		if (mLoader != null) {
 			try {
-				// 阻塞当前线程，等待mLoader结束后才能继续执行当前线程
+				// after mloader start, block current thread， wait for mloader to end
 				mLoader.join();
 			} catch (InterruptedException e) {
 				Log.e(LOG_TAG, "Unexpected error", e);
