@@ -101,7 +101,7 @@ public class SplashView extends View {
 
 		if (mLoader != null) {
 			try {
-				// after mloader start, block current thread£¬ wait for mloader to end
+				// after mloader start, block current threadï¿½ï¿½ wait for mloader to end
 				mLoader.join();
 			} catch (InterruptedException e) {
 				Log.e(LOG_TAG, "Unexpected error", e);
@@ -162,5 +162,13 @@ public class SplashView extends View {
 
 	private static PathEffect createPathEffect(float pathLength, float phase, float offset) {
 		return new DashPathEffect(new float[] { pathLength, pathLength }, Math.max(phase * pathLength, offset));
+	}
+	
+	public int getDuration() {
+		return mDuration;
+	}
+	
+	public void setDuration(int duration) {
+		mDuration = duration;
 	}
 }
