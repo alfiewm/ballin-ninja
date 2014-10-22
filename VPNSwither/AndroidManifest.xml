@@ -16,6 +16,7 @@
         <activity
             android:name=".SplashScreenActivity"
             android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

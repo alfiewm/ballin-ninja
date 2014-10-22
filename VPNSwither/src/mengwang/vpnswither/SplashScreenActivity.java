@@ -42,9 +42,7 @@ public class SplashScreenActivity extends Activity {
 
 	@SuppressWarnings("deprecation")
 	public void issueNotification() {
-		Intent intent = new Intent("android.net.vpn.SETTINGS");
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, getSystemVPNSettingsIntent(), PendingIntent.FLAG_UPDATE_CURRENT);
 		NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
 				.setContentTitle(getString(R.string.app_name)).setContentText(getString(R.string.notification_content))
@@ -55,7 +53,13 @@ public class SplashScreenActivity extends Activity {
 	}
 
 	private void openSystemVpnSettings() {
-		startActivity(new Intent("android.net.vpn.SETTINGS"));
+		startActivity(getSystemVPNSettingsIntent());
 		finish();
+	}
+	
+	private Intent getSystemVPNSettingsIntent() {
+		Intent intent = new Intent("android.net.vpn.SETTINGS");
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		return intent;
 	}
 }
