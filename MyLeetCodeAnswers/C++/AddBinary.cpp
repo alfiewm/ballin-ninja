@@ -62,12 +62,34 @@ public:
         return c;
     }
 };
-
+/*More clean one, but takes more time*/
+class Solution2 {
+public:
+    string addBinary(string a, string b) {
+        string result;
+        const size_t n = a.size() > b.size() ? a.size() : b.size();
+        reverse(a.begin(), a.end());
+        reverse(b.begin(), b.end());
+        int carry = 0;
+        for (size_t i = 0; i < n; ++i) {
+            const int ia = (i < a.size()) ? a[i] -'0': 0;
+            const int ib = (i < b.size()) ? b[i] -'0': 0;
+            const int val = (ia + ib + carry) %2;
+            carry = (ia + ib + carry) /2;
+            //result.insert(result.begin(), val+'0');
+            result = (char)(val+'0') + result;
+        }
+        if (carry == 1) result = "1" + result;
+        return result;
+    }
+};
 int main() {
     Solution s;
+    Solution2 s2;
     string a, b;
     while (cin >> a >> b) {
         cout << s.addBinary(a, b) << endl;
+        cout << s2.addBinary(a, b) << endl;
     }
     return 0;
 }
