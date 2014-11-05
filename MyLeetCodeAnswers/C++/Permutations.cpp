@@ -1,3 +1,24 @@
+/*非递归的实现，From chen Hao*/
+class Solution {
+public:
+    vector<vector<int> > permute(vector<int> &num) {
+        vector<vector<int> > result;
+        result.push_back(num);
+        if (num.size() < 2) return result;
+
+        for (int pos = 0; pos < num.size() -1; ++ pos) {
+            int size = result.size();
+            for (int i = 0; i < size; ++i) {
+                for (int j = pos+1; j < result[i].size(); ++j) {
+                    vector<int> v = result[i];
+                    swap(v[pos], v[j]);
+                    result.push_back(v);
+                }
+            }
+        }
+        return result;
+    }
+};
 
 /*看onenote笔记，优化之后的代码*/
 class Solution {
