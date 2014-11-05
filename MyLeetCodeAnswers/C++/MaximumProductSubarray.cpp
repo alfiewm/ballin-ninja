@@ -2,7 +2,11 @@
 #include <vector>
 using namespace std;
 
-/*Standard solution*/
+/*Standard solution
+f(k)代表以A[k]结尾的连续子数组最大乘积
+g(k)代表以A[k]结尾的连续子数组最小乘积，之所以保留g(k)是因为存在当g(k-1)负数时，A[k]也可能是负数，乘积反而较大
+f(k) = max(f(k-1)*A[k], A[k], g(k-1)*A[k]);
+g(k) = min(g(k-1)*A[k], A[k], f(k-1)*A[k]);*/
 class Solution2 {
 public:
     int maxProduct(int A[], int n) {
