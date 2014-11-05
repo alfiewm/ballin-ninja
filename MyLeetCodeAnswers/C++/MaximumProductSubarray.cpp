@@ -22,6 +22,38 @@ public:
     }
 };
 
+/*Discuss area 对我的解法的一个优化，基于三点考虑
+一、如果没有0，且都为正数，则最大值就是所有数的乘积。
+二、若有0，则分割计算
+三、分割后，每段若有奇数个负数，则从左至右累乘至第一个负数，从右至左累乘到第一个负数，不包括第一个负数，得到两个值
+从左至右累乘至最后一个负数，从右至左至最后一个负数，又得到两个，则max必然在这四个数中
+归纳起来，从右至左，从左至右遍历，必然会遇到这个最大值*/
+class Solution1p5 {
+public:
+    int maxProduct(int A[], int n) {
+        if (A == NULL || n == 0) return 0;
+        int maxp = INT_MIN;
+        int product = 1;
+        for (int i=0; i < n; ++i) {
+            product*=A[i];
+            if (product > maxp)
+                maxp = product;
+            if (product == 0)
+                product =1;
+        }
+
+        product = 1;
+        for (int i = n-1; i >=0; --i) {
+            product*=A[i];
+            if (product > maxp)
+                maxp = product;
+            if (product == 0)
+                product = 1;
+        }
+        return maxp;
+    }
+};
+
 /*My ugly solution, but works*/
 class Solution {
 public:
