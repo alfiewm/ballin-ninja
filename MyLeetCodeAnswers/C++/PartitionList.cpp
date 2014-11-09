@@ -12,6 +12,32 @@
  * return 1->2->2->4->3->5.
  */
 
+// 仿chen hao的解决分方案，更简洁利索
+class Solution {
+public:
+    ListNode *partition(ListNode *head, int x) {
+        if (head == NULL || head->next == NULL) return head;
+        ListNode dummy(0);
+        dummy.next = head;
+        head = &dummy;
+        ListNode *frontLine = NULL; // pointing to the node who's next.val >= x
+        for (ListNode *p = head; p != NULL && p->next != NULL;) {
+            if (frontLine == NULL && p->next->val >= x) {
+                frontLine = p;
+            } else if (frontLine != NULL && p->next->val < x) {
+                ListNode *pNext = p->next;
+                p->next = pNext->next;
+                pNext->next = frontLine->next;
+                frontLine->next=pNext;
+                frontLine = pNext;
+                continue;
+            }
+            p = p->next;
+        }
+        return dummy.next;
+    }
+};
+
 // My solution
 class Solution {
 public:
