@@ -11,12 +11,12 @@
 #include "Solution.h"
 
 
-// 从Dicuss找来的方法，天才啊，考虑到INT最多有32位，开平方最多是16位，依次将15到1位置1，如果超了，则reset, 同时，使用long避免越界
-Class Solution {
+// 从Dicuss找来的方法，天才啊，考虑到INT最多有32位，开平方最多是15位，依次将15到1位置1，如果超了，则reset, 同时，使用unsigned long避免越界
+class Solution {
 public:
     int sqrt(int x) {
-        long ans = 0;
-        long bit = 1l << 16;
+        unsigned long ans = 0;
+        unsigned long bit = 1l << 15;
         while (bit > 0) {
             ans |= bit;
             if (ans*ans > x) ans ^= bit;
@@ -24,7 +24,7 @@ public:
         }
         return (int)ans;
     }
-}
+};
 
 // my solution, 没有用乘法，但是TLE了。。。
 class Solution {
