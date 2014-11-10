@@ -11,6 +11,48 @@
  * getMin() -- Retrieve the minimum element in the stack.
  */
 
+// My forth Solution, Accepted, with minum space
+class MinStack {
+public:
+    void push(int x) {
+        valSta.push(x);
+        if (minSta.empty() || x < minSta.top().minv) {
+            minSta.push(MinVal(x));
+        } else if (x == minSta.top().minv) {
+            ++minSta.top().count;
+        }
+    }
+
+    void pop() {
+        assert (!valSta.empty());
+        if (valSta.top() == getMin()) {
+            if (minSta.top().count == 1) {
+                minSta.pop();
+            } else {
+                --minSta.top().count;
+            }
+        }
+        valSta.pop();
+    }
+
+    int top() {
+        assert (!valSta.empty());
+        return valSta.top();
+    }
+
+    int getMin() {
+        assert (!minSta.empty());
+        return minSta.top().minv;
+    }
+private:
+    struct MinVal {
+        int minv;
+        int count;
+        MinVal(int x) : minv(x), count(1) {}
+    };
+    stack<int> valSta;
+    stack<MinVal> minSta;
+};
 // My third Solution, Accepted finally
 class MinStack {
 public:
