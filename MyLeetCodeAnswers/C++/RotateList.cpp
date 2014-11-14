@@ -10,6 +10,31 @@
  * return 4->5->1->2->3->NULL.
 */
 
+// Another Soluton From Discuss Area, 主要的改进是在第一次计算list长度的时候将其组成一个环，这样第二次遍历不用遍历完整的list，而且代码更优雅
+ListNode *rotateRight(ListNode *head, int k) {
+    if (head == NULL || head->next == NULL || k == 0) return head;
+    int len = 1;
+    ListNode *tail = head;
+
+    /* find the end of list */
+    while (tail->next != NULL) {
+        tail = tail->next;
+        len++;
+    }
+
+    /* form a circle */
+    tail->next = head;
+    k = k % len;
+    for (int i = 0; i < len - k; i++) {
+        tail = tail->next;
+    }
+    head = tail->next;
+    tail->next = NULL;
+    return head;
+}
+
+
+// My Solution
 class Solution {
 public:
     ListNode *rotateRight(ListNode *head, int k) {
