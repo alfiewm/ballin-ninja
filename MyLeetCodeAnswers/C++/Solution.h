@@ -19,7 +19,7 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
-void printVector(std::vector<int> v) {
+template<class T> void printVector(std::vector<T> v) {
 	for (int i = 0; i < v.size(); ++i) {
 		cout << v[i] << " ";
 	}
