@@ -39,7 +39,12 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.mengwang.ui.activity.AnimationTestActivity" >
         </activity>
-        <activity android:name="com.mengwang.ui.activity.PocketAnimActivity" android:theme="@android:style/Theme.Holo.Light.NoActionBar" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.mengwang.ui.activity.SwipeRefreshActivity" />
+        <activity
+            android:name="com.mengwang.ui.activity.PocketAnimActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
