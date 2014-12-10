@@ -6,3 +6,5 @@ VPNSwither/bin
 VPNSwither/gen
 *.apk
 .DS_Store
+*.o
+*.exe
