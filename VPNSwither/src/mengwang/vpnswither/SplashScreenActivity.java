@@ -46,7 +46,7 @@ public class SplashScreenActivity extends Activity {
 		NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
 				.setContentTitle(getString(R.string.app_name)).setContentText(getString(R.string.notification_content))
-				.setSmallIcon(R.drawable.ic_launcher).setContentIntent(pendingIntent);
+				.setSmallIcon(R.drawable.rocket).setContentIntent(pendingIntent);
 
 		notificationManager.notify(NOTIFICATION_ID,
 				Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ? builder.build() : builder.getNotification());
