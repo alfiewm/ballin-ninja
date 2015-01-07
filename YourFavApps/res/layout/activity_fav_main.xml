@@ -32,14 +32,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="@string/to_be_continue" />
+        android:text="customize camera" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/shape_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="@string/to_be_continue" />
+        android:text="shape test" />
 
     <Button
         android:id="@+id/button4"

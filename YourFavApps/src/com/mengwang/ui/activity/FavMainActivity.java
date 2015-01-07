@@ -27,6 +27,9 @@ public class FavMainActivity extends Activity {
 		case R.id.swipe_refresh:
 			startActivity(new Intent(this, SwipeRefreshActivity.class));
 			break;
+		case R.id.shape_test:
+			startActivity(new Intent(this, ShapeTestActivity.class));
+			break;
 		default:
 			break;
 		}
