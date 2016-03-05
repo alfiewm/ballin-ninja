@@ -8,3 +8,4 @@ VPNSwither/gen
 .DS_Store
 *.o
 *.exe
+*.class
