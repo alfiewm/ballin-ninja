@@ -9,3 +9,4 @@ VPNSwither/gen
 *.o
 *.exe
 *.class
+*.pyc
