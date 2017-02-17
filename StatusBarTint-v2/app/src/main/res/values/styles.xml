@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="TranslucentAppTheme" parent="android:Theme.Holo.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="TranslucentAppTheme.SplashTheme">
+        <item name="android:windowBackground">@drawable/tutor_splash_screen</item>
+    </style>
+
+    <style name="SolidAppTheme" parent="android:Theme.Holo.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+</resources>

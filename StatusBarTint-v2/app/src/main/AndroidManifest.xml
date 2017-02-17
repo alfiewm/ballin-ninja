@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="meng.statusbartint">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/TranslucentAppTheme">
+        <activity android:name=".ui.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.RedActivity" />
+        <activity android:name=".ui.WhiteActivity" />
+        <activity
+            android:name=".ui.SplashActivity"
+            android:theme="@style/TranslucentAppTheme.SplashTheme" />
+        <activity
+            android:name=".ui.SolidStatusBarActivity"
+            android:theme="@style/SolidAppTheme" />
+    </application>
+
+</manifest>
