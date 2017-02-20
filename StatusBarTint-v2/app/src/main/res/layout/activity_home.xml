@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f0f091"
     android:fitsSystemWindows="true"
     android:gravity="center"
     android:orientation="vertical"
@@ -50,5 +51,33 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="纯色(RGBW)状态栏(也就是全透)" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/holo_red_light"
+        android:gravity="center"
+        android:text="DEMO"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_omni_status_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="onClick"
+        android:text="OMNI" />
+
+    <Button
+        android:id="@+id/btn_omni_status_bar_with_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="onClick"
+        android:text="OMNI 带头图" />
 
 </LinearLayout>

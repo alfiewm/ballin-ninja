@@ -10,3 +10,4 @@ VPNSwither/gen
 *.exe
 *.class
 *.pyc
+vcs.xml

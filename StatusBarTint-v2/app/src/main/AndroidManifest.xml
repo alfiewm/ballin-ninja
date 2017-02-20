@@ -23,6 +23,9 @@
         <activity
             android:name=".ui.SolidStatusBarActivity"
             android:theme="@style/SolidAppTheme" />
+        <activity
+            android:name=".ui.OmniThemeActivity"
+            android:theme="@style/OmniTheme" />
     </application>
 
 </manifest>

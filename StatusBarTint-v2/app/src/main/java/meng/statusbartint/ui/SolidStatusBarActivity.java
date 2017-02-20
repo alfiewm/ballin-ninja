@@ -85,6 +85,7 @@ public class SolidStatusBarActivity extends BaseActivity implements View.OnClick
         }
 //        setMIUIStatusBar(light);
         StatusBarUtil.MIUISetStatusBarLightMode(getWindow(), light);
+        StatusBarUtil.FlymeSetStatusBarLightMode(getWindow(), light);
     }
 
     private void setMIUIStatusBar(boolean darkStatusBarIconAndText) {

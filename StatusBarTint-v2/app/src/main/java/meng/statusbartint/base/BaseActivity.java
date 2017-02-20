@@ -1,8 +1,6 @@
 package meng.statusbartint.base;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import meng.statusbartint.util.SystemStatusBarHelper;
@@ -17,11 +15,6 @@ public class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-        if (intent != null && intent.getExtras() != null && intent.getExtras().containsKey(
-                STATUS_BAR_COLOR)) {
-            int color = intent.getExtras().getInt(STATUS_BAR_COLOR, Color.RED);
-            SystemStatusBarHelper.setStatusBarColor(this, color);
-        }
+        SystemStatusBarHelper.setStatusBarColor(this);
     }
 }
