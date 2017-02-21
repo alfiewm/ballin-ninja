@@ -49,7 +49,7 @@ public class SystemStatusBarHelper {
             return;
         }
         // 3. 如果是Flyme系统，同上尝试设置透明深色icon模式
-        if (StatusBarUtil.isFlyme()) {
+        if (StatusBarUtil.isFlyme(activity)) {
             StatusBarUtil.FlymeSetStatusBarLightMode(activity.getWindow(), true);
             return;
         }

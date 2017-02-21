@@ -72,9 +72,10 @@ public class StatusBarUtil {
             return false;
         } else if (isMIUIV6()) {
             return MIUISetStatusBarLightMode(activity.getWindow(), light);
-        } else {
-            // flyme 没有方法检测到，尝试设置
+        } else if (isFlyme(activity)) {
             return FlymeSetStatusBarLightMode(activity.getWindow(), light);
+        } else {
+            return false;
         }
     }
 
@@ -197,28 +198,24 @@ public class StatusBarUtil {
         return result;
     }
 
-    private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
-    private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
 
     public static boolean isMIUIV6() {
         try {
             final BuildProperties prop = BuildProperties.newInstance();
-            String versionCode = prop.getProperty(KEY_MIUI_VERSION_CODE, null);
             String versionName = prop.getProperty(KEY_MIUI_VERSION_NAME, null);
-            String internalStorage = prop.getProperty(KEY_MIUI_INTERNAL_STORAGE, null);
             return versionName != null && "V6".compareTo(versionName) <= 0;
         } catch (final IOException e) {
             return false;
         }
     }
 
-    public static boolean isFlyme() {
+    public static boolean isFlyme(Activity activity) {
         try {
-            // Invoke Build.hasSmartBar()
-            final Method method = Build.class.getMethod("hasSmartBar");
-            return method != null;
-        } catch (final Exception e) {
+            WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+            WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+            return true;
+        } catch (final NoSuchFieldException e) {
             return false;
         }
     }
