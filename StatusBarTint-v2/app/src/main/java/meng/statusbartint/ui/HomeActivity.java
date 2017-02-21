@@ -32,6 +32,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             startActivity(intent);
         } else if (v.getId() == R.id.btn_omni_status_bar) {
             startActivity(new Intent(this, OmniThemeActivity.class));
+        } else if (v.getId() == R.id.btn_omni_status_bar_with_head) {
+            startActivity(new Intent(this, OmniThemeWithHeadActivity.class));
         }
     }
 }

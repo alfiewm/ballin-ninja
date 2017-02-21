@@ -11,3 +11,4 @@ VPNSwither/gen
 *.class
 *.pyc
 vcs.xml
+modules.xml

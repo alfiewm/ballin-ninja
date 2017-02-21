@@ -9,6 +9,12 @@
     android:orientation="vertical"
     tools:context="meng.statusbartint.ui.HomeActivity">
 
+    <Button
+        android:id="@+id/btn_splash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="闪屏页效果(图片背景，全透明)" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,12 +22,6 @@
         android:layout_marginRight="8dp"
         android:gravity="left"
         android:text="API >= 19 可实现半透明状态栏，状态栏下方颜色可以控制" />
-
-    <Button
-        android:id="@+id/btn_splash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="闪屏页效果(图片背景，bar半透明)" />
 
     <Button
         android:id="@+id/btn_red"

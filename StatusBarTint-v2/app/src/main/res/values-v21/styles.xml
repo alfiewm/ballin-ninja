@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SplashTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@drawable/tutor_splash_screen</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+</resources>

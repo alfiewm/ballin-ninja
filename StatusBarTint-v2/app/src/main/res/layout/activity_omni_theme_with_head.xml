@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context="meng.statusbartint.ui.OmniThemeActivity">
+
+    <meng.statusbartint.view.ObservableScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/bg_eh"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:onClick="onClick"
+                android:scaleType="centerCrop"
+                android:src="@drawable/eh" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No More Counting Dollars."
+                android:textSize="80sp" />
+        </LinearLayout>
+    </meng.statusbartint.view.ObservableScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/status_bar_padding_view"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"/>
+
+        <FrameLayout
+            android:id="@+id/navbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/back_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:onClick="onClick"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/arrow_back_black" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="导航栏"
+                android:textColor="#333333"
+                android:textSize="18sp" />
+
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

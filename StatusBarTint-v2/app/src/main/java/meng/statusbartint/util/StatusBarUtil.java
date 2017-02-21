@@ -2,8 +2,10 @@ package meng.statusbartint.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -39,19 +41,40 @@ public class StatusBarUtil {
     /**
      * 修改状态栏颜色，支持4.4以上版本
      */
-    public static void setStatusBarColor(Activity activity, int colorId) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    public static void setStatusBarColor(Activity activity, @ColorInt int colorId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // TODO(mwang): 2017/2/21 先确定能够给变icon颜色再改statusbar背景色
             Window window = activity.getWindow();
-//      window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(activity.getResources().getColor(colorId));
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(colorId);
+//        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
-            transparencyBar(activity);
+//            transparencyBar(activity);
             // FIXME(mwang): 2017/2/17 Systembartint库无人维护，不建议使用
 //            SystemBarTintManager tintManager = new SystemBarTintManager(activity);
 //            tintManager.setStatusBarTintEnabled(true);
 //            tintManager.setStatusBarTintResource(colorId);
+        }
+    }
+
+    public static boolean setLightStatusBar(Activity activity, boolean light) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            View decor = activity.getWindow().getDecorView();
+            if (light) {
+                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            } else {
+                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            }
+            return true;
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return false;
+        } else if (isMIUIV6()) {
+            return MIUISetStatusBarLightMode(activity.getWindow(), light);
+        } else {
+            // flyme 没有方法检测到，尝试设置
+            return FlymeSetStatusBarLightMode(activity.getWindow(), light);
         }
     }
 
@@ -70,8 +93,7 @@ public class StatusBarUtil {
                 result = 2;
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 activity.getWindow().getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 result = 3;
             }
         }
@@ -199,5 +221,15 @@ public class StatusBarUtil {
         } catch (final Exception e) {
             return false;
         }
+    }
+
+    public static int getStatusBarHeight(Activity activity) {
+        Resources resources = activity.getResources();
+        int result = 72; // 1920x1280
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = resources.getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }
