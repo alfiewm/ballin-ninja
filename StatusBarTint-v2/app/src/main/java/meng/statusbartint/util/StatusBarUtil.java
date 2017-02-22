@@ -70,9 +70,9 @@ public class StatusBarUtil {
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return false;
-        } else if (isMIUIV6()) {
+        } else if (isSupportedMIUI()) {
             return MIUISetStatusBarLightMode(activity.getWindow(), light);
-        } else if (isFlyme(activity)) {
+        } else if (isSupportedFlyme(activity)) {
             return FlymeSetStatusBarLightMode(activity.getWindow(), light);
         } else {
             return false;
@@ -192,7 +192,6 @@ public class StatusBarUtil {
                 }
                 result = true;
             } catch (Exception e) {
-
             }
         }
         return result;
@@ -200,7 +199,7 @@ public class StatusBarUtil {
 
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
 
-    public static boolean isMIUIV6() {
+    public static boolean isSupportedMIUI() {
         try {
             final BuildProperties prop = BuildProperties.newInstance();
             String versionName = prop.getProperty(KEY_MIUI_VERSION_NAME, null);
@@ -210,7 +209,7 @@ public class StatusBarUtil {
         }
     }
 
-    public static boolean isFlyme(Activity activity) {
+    public static boolean isSupportedFlyme(Activity activity) {
         try {
             WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
             WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
@@ -228,5 +227,10 @@ public class StatusBarUtil {
             result = resources.getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    public static boolean isSupportDynamicStatusBarBg(Activity activity) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                || isSupportedFlyme(activity) || isSupportedMIUI();
     }
 }

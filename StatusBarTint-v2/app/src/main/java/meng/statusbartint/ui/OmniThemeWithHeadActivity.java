@@ -30,20 +30,27 @@ public class OmniThemeWithHeadActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO fit system windows is set false in xml
         setContentView(R.layout.activity_omni_theme_with_head);
         ButterKnife.bind(this);
-        StatusBarUtil.transparencyBar(this);
-        StatusBarUtil.setLightStatusBar(this, false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            statusBarPaddingView.setVisibility(View.GONE);
-            LinearLayout.LayoutParams params =
-                    (LinearLayout.LayoutParams) navBarView.getLayoutParams();
-            params.setMargins(0, (int) (getResources().getDisplayMetrics().density * 24), 0, 0);
-            navBarView.setLayoutParams(params);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        final boolean supportDynamicStatusBarBg = StatusBarUtil.isSupportDynamicStatusBarBg(this);
+        if (supportDynamicStatusBarBg) {
+            StatusBarUtil.transparencyBar(this);
+            StatusBarUtil.setLightStatusBar(this, false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                statusBarPaddingView.setVisibility(View.GONE);
+                LinearLayout.LayoutParams params =
+                        (LinearLayout.LayoutParams) navBarView.getLayoutParams();
+                params.setMargins(0, (int) (getResources().getDisplayMetrics().density * 24), 0, 0);
+                navBarView.setLayoutParams(params);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                statusBarPaddingView.setVisibility(View.VISIBLE);
+                statusBarPaddingView.setBackgroundColor(Color.parseColor("#00ffffff"));
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             statusBarPaddingView.setVisibility(View.VISIBLE);
             statusBarPaddingView.setBackgroundColor(Color.parseColor("#00ffffff"));
+        } else {
+            statusBarPaddingView.setVisibility(View.GONE);
         }
         scrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
             @Override
@@ -54,9 +61,11 @@ public class OmniThemeWithHeadActivity extends BaseActivity {
                 int color = Color.argb((int) ((collapsePercentage) * 0xFF), 0xFF, 0xFF, 0xFF);
                 navBarView.setBackgroundColor(color);
                 statusBarPaddingView.setBackgroundColor(color);
-                StatusBarUtil.setLightStatusBar(OmniThemeWithHeadActivity.this,
-                        collapsePercentage > 0.8);
-                StatusBarUtil.setStatusBarColor(OmniThemeWithHeadActivity.this, color);
+                if (supportDynamicStatusBarBg) {
+                    StatusBarUtil.setLightStatusBar(OmniThemeWithHeadActivity.this,
+                            collapsePercentage > 0.8);
+                    StatusBarUtil.setStatusBarColor(OmniThemeWithHeadActivity.this, color);
+                }
             }
         });
     }

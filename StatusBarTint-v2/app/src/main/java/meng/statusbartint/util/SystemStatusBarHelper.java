@@ -36,24 +36,25 @@ public class SystemStatusBarHelper {
             return;
         }
 
-        // 设置透明状态栏,后面三种case都需要
-        // 需要在xml中设置fitsystemwindows，这样statusbar下面透出的是activity的背景色。
-        // 如果不设的话，需要手动给所有activity加一个paddingTopView
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        // 2. 如果是MIUI v6及以上系统，设置透明深色icon模式
+        if (StatusBarUtil.isSupportedMIUI() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-        // 2. 如果是MIUI v6及以上系统，设置透明深色icon模式
-        if (StatusBarUtil.isMIUIV6()) {
             StatusBarUtil.MIUISetStatusBarLightMode(activity.getWindow(), true);
             return;
         }
         // 3. 如果是Flyme系统，同上尝试设置透明深色icon模式
-        if (StatusBarUtil.isFlyme(activity)) {
+        if (StatusBarUtil.isSupportedFlyme(activity) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             StatusBarUtil.FlymeSetStatusBarLightMode(activity.getWindow(), true);
             return;
         }
-        // 4. 如果是其他系统>=4.4，设置半透明statusbar
-        // 前面已经设置过
+        // 4. 如果是其他系统>=5.0，设置半透明statusbar, 其实4.4以上就可以设置半透明状态栏，但是4.4上面statusbar是渐变效果，搭配白色背景很丑，暂时从5.0开始
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
     }
 }
