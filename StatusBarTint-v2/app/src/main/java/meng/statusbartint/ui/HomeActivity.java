@@ -10,6 +10,11 @@ import meng.statusbartint.base.BaseActivity;
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
+    protected int getContentLayoutResId() {
+        return R.layout.activity_home;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);

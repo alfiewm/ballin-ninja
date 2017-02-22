@@ -2,38 +2,38 @@ package meng.statusbartint.ui;
 
 import static meng.statusbartint.R.id.back_btn;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import meng.statusbartint.R;
 import meng.statusbartint.base.BaseActivity;
 import meng.statusbartint.util.StatusBarUtil;
-import meng.statusbartint.util.SystemStatusBarHelper;
 
 public class SolidStatusBarActivity extends BaseActivity implements View.OnClickListener {
 
     private boolean lightStatusBar;
-    private static int[] solid_colors = {Color.WHITE, Color.RED, Color.parseColor("#008000"), Color.BLUE};
+    private static int[] solid_colors = {Color.WHITE, Color.RED, Color.parseColor("#008000"),
+            Color.BLUE};
     private int index;
-    private ImageView backBtn;
-    private TextView titleView;
+    @BindView(R.id.back_btn)
+    ImageView backBtn;
+    @BindView(R.id.title)
+    TextView titleView;
+
+    @Override
+    protected int getContentLayoutResId() {
+        return R.layout.activity_solid_status_bar;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_solid_status_bar);
-        backBtn = ((ImageView) findViewById(back_btn));
-        titleView = ((TextView) findViewById(R.id.title));
-        Intent intent = getIntent();
-        if (intent != null && intent.getExtras() != null && intent.getExtras().containsKey(
-                STATUS_BAR_COLOR)) {
-            int color = intent.getExtras().getInt(STATUS_BAR_COLOR, Color.BLUE);
-            switchNavBarAndStatusBarBg(color);
-        }
+        ButterKnife.bind(this);
         backBtn.setOnClickListener(this);
     }
 
@@ -51,7 +51,7 @@ public class SolidStatusBarActivity extends BaseActivity implements View.OnClick
     }
 
     private void switchNavBarAndStatusBarBg(int color) {
-        SystemStatusBarHelper.setStatusBarColor(this, color);
+        StatusBarUtil.setStatusBarColor(this, color);
         if (color == Color.WHITE) {
             backBtn.setImageResource(R.drawable.arrow_back_black);
             titleView.setTextColor(Color.BLACK);

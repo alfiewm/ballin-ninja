@@ -1,6 +1,5 @@
 package meng.statusbartint.ui;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,9 +9,8 @@ import meng.statusbartint.base.BaseActivity;
 public class OmniThemeActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_omni_theme);
+    protected int getContentLayoutResId() {
+        return R.layout.activity_omni_theme;
     }
 
     public void onClick(View v) {

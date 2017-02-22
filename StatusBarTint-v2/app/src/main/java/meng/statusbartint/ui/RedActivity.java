@@ -12,8 +12,12 @@ public class RedActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_red);
         findViewById(R.id.btn_toast).setOnClickListener(this);
+    }
+
+    @Override
+    protected int getContentLayoutResId() {
+        return R.layout.activity_red;
     }
 
     @Override

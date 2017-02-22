@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_root_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    tools:context="meng.statusbartint.ui.OmniThemeActivity">
+    android:layout_height="match_parent">
+
+    <meng.statusbartint.view.ObservableScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
+
+        <LinearLayout
+            android:id="@+id/activity_root_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            tools:context="meng.statusbartint.ui.OmniThemeActivity">
+
+
+            <ImageView
+                android:id="@+id/bg_eh"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:onClick="onClick"
+                android:scaleType="centerCrop"
+                android:src="@drawable/eh" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Counting Stars"
+                android:textSize="120sp" />
+
+        </LinearLayout>
+    </meng.statusbartint.view.ObservableScrollView>
 
     <FrameLayout
         android:id="@+id/navbar"
@@ -38,13 +65,4 @@
             android:textSize="18sp" />
 
     </FrameLayout>
-
-    <ImageView
-        android:id="@+id/bg_eh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="onClick"
-        android:scaleType="centerCrop"
-        android:src="@drawable/eh" />
-
-</LinearLayout>
+</FrameLayout>

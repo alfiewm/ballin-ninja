@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#09d05b"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="meng.statusbartint.ui.SolidStatusBarActivity">
 
