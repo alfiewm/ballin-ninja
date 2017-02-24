@@ -3,8 +3,11 @@ package meng.statusbartint.ui;
 import static meng.statusbartint.R.id.back_btn;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +46,7 @@ public class SolidStatusBarActivity extends BaseActivity implements View.OnClick
             finish();
         } else if (v.getId() == R.id.switch_status_bar_icon) {
             lightStatusBar = !lightStatusBar;
-            StatusBarUtil.setLightStatusBar(this, lightStatusBar);
+            StatusBarUtil.setTransparentStatusBar(this, lightStatusBar ? StatusBarUtil.MODE_LIGHT : StatusBarUtil.MODE_DARK);
         } else if (v.getId() == R.id.switch_status_bar_color) {
             int color = solid_colors[(index++) % solid_colors.length];
             switchNavBarAndStatusBarBg(color);
@@ -51,15 +54,19 @@ public class SolidStatusBarActivity extends BaseActivity implements View.OnClick
     }
 
     private void switchNavBarAndStatusBarBg(int color) {
-        StatusBarUtil.setStatusBarColor(this, color);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(color);
+        }
         if (color == Color.WHITE) {
             backBtn.setImageResource(R.drawable.arrow_back_black);
             titleView.setTextColor(Color.BLACK);
-            StatusBarUtil.setLightStatusBar(this, true);
+            StatusBarUtil.setTransparentStatusBar(this, StatusBarUtil.MODE_LIGHT);
         } else {
             backBtn.setImageResource(R.mipmap.ic_back);
             titleView.setTextColor(Color.WHITE);
-            StatusBarUtil.setLightStatusBar(this, false);
+            StatusBarUtil.setTransparentStatusBar(this, StatusBarUtil.MODE_DARK);
         }
         findViewById(R.id.navbar).setBackgroundColor(color);
     }

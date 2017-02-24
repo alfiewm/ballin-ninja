@@ -39,7 +39,7 @@ public class OmniThemeWithHeadActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        StatusBarUtil.initDynamicStatusBarBg(this, statusBarPaddingView);
+        StatusBarUtil.initDynamicStatusBarBg(this, statusBarPaddingView, StatusBarUtil.MODE_DARK);
         scrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
             @Override
             public void onScrollChanged(ScrollView scrollView, int x, int y, int oldx, int oldy) {
@@ -49,8 +49,9 @@ public class OmniThemeWithHeadActivity extends BaseActivity {
                 int color = Color.argb((int) ((collapsePercentage) * 0xFF), 0xFF, 0xFF, 0xFF);
                 navBarView.setBackgroundColor(color);
                 statusBarPaddingView.setBackgroundColor(color);
-                StatusBarUtil.setLightStatusBar(OmniThemeWithHeadActivity.this,
-                        collapsePercentage > 0.8);
+                StatusBarUtil.setTransparentStatusBar(OmniThemeWithHeadActivity.this,
+                        collapsePercentage > 0.8 ? StatusBarUtil.MODE_LIGHT
+                                : StatusBarUtil.MODE_DARK);
             }
         });
     }

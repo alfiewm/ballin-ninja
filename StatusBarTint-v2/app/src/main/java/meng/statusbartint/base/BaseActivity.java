@@ -1,6 +1,7 @@
 package meng.statusbartint.base;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.view.View;
@@ -23,7 +24,8 @@ public abstract class BaseActivity extends Activity {
         viewStub.setLayoutResource(getContentLayoutResId());
         viewStub.inflate();
         View statusPaddingView = findViewById(R.id.base_status_bar_padding_view);
-        StatusBarUtil.setLightStatusBarColor(this, statusPaddingView, extendsStatusBar());
+        StatusBarUtil.initTransparentStatusBar(this, statusPaddingView, extendsStatusBar(),
+                Color.WHITE);
     }
 
     @LayoutRes
