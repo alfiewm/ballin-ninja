@@ -45,6 +45,7 @@ def process(ws, content):
     content = content.replace('encoding="gbk"', 'encoding="utf-8"')
     dom = ET.fromstring(content)
     elements = dom.findall('./body')
+    count = 0
     for body in elements:
         cjhm = get_text_or_empty(body.find('clsbdh'))
         if cjhm is "":
@@ -58,6 +59,8 @@ def process(ws, content):
             print "skiped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt
             continue
         appendWs(ws, cjhm, je, se, jshj, kprq, fpzt)
+        count = count + 1
+    return count
 
 # taxML
 def processTAXML(ws, content):
@@ -66,11 +69,14 @@ def processTAXML(ws, content):
     clsbdhList = soup.find_all("clsbdh")
     jshjList = soup.find_all("jshj")
     kprqList = soup.find_all("kprq")
+    count = 0
     for (clsbdh, jshj, kprq) in zip(clsbdhList, jshjList, kprqList):
         if clsbdh.string is None or len(clsbdh.string) != 17:
             print "skiped empty invoice. ", clsbdh.string, jshj.string, kprq.string
             continue
         appendWs(ws, clsbdh.string, "", "", jshj.string, kprq.string, "")
+        count = count + 1
+    return count
 
 # lzsc.xml & tssf.xml
 def processExcelSheet(ws, fileContent):
@@ -82,6 +88,7 @@ def processExcelSheet(ws, fileContent):
     kprqIndex = -1
     jshjIndex = -1
     fpztIndex = -1
+    count = 0
     for item in soup.find_all('row'):
         cellList = item.find_all('cell')
         if len(cellList) < 10:
@@ -126,6 +133,8 @@ def processExcelSheet(ws, fileContent):
                 print "skiped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt
                 continue
             appendWs(ws, cjhm, je, se, jshj, kprq, fpzt)
+            count += 1
+        return count
 
 def cell_string(cell):
     return cell.text
@@ -135,6 +144,7 @@ if __name__ == '__main__':
     ws = wb.active
     ws.title = "xml"
     ws.append(["年", "月", "车架号码", "价格", "税额", "价税合计", "开票日期", "发票状态"])
+    let totalCount = 0
     for root, dirs, files in os.walk("."):
         for name in files:
             absPath = root + "/" + name
@@ -144,10 +154,13 @@ if __name__ == '__main__':
             print "processing " + absPath
             # ws.append([absPath])
             if content.find("Excel.Sheet") != -1:
-                processExcelSheet(ws, content)
+                count = processExcelSheet(ws, content)
             elif content.find("taxML") != -1:
-                processTAXML(ws, content)
+                count = processTAXML(ws, content)
             else:
-                process(ws, content)
+                count = process(ws, content)
+            totalCount += count
+            print "####### added " + count " items!!!"
+    print "------------ tatal count = " + totalCount
     wb.save('output.xlsx')
     os.system("open output.xlsx")
