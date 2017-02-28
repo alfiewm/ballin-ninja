@@ -1,7 +1,6 @@
 package meng.statusbartint.util;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
-
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 
 /**
  * Created by meng on 2017/2/17.
@@ -32,7 +34,7 @@ public class StatusBarUtil {
      * （这么做的原因一是为了在各个版本之间保持统一，二是为了实现动态状态栏颜色)
      */
     public static void initTransparentStatusBar(Activity activity, View statusBarPaddingView,
-            boolean drawBeneathStatusBar, @ColorInt int statusBarBackgroundColor) {
+                                                boolean drawBeneathStatusBar, @ColorInt int statusBarBackgroundColor) {
         if (activity == null || activity.getWindow() == null) {
             return;
         }
@@ -41,18 +43,18 @@ public class StatusBarUtil {
         statusBarPaddingView.setBackgroundColor(statusBarBackgroundColor);
         statusBarPaddingView.setVisibility(drawBeneathStatusBar ? View.GONE : View.VISIBLE);
 
-
         // 对于无法设置透明状态栏，隐藏paddingView，使用默认的黑色状态栏
         if (!setTransparentStatusBar(activity.getWindow(), MODE_LIGHT)) {
             statusBarPaddingView.setVisibility(View.GONE);
         }
+        statusBarPaddingView.setVisibility(View.GONE);
     }
 
     /**
      * 初始化动态状态栏，>=LOLLIPOP或者是小米魅族时，activity content会延伸至状态栏下方，需要启用statusBarPaddingView
      */
     public static void initDynamicStatusBarBg(Window window, View statusBarPaddingView,
-            int statusBarMode) {
+                                              int statusBarMode) {
         setStatusBarPaddingViewHeight(statusBarPaddingView);
         if (setTransparentStatusBar(window, statusBarMode)) {
             statusBarPaddingView.setVisibility(View.VISIBLE);
@@ -87,14 +89,17 @@ public class StatusBarUtil {
     public static final int MODE_LIGHT = 0;
     public static final int MODE_DARK = 1;
 
+    public static boolean setLightTransparentStatusBar(Window window) {
+        return setTransparentStatusBar(window, MODE_LIGHT);
+    }
+
     /**
      * 设置状态栏模式，状态栏图标和文字将变为深色/浅色，activity内容将延伸至状态栏下方
      *
      * @return true表示设置透明状态栏成功，false失败，状态栏icon颜色不保证能设置成功
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static boolean setTransparentStatusBar(Window window,
-            @StatusBarMode int statusBarMode) {
+    @SuppressLint("NewApi")
+    public static boolean setTransparentStatusBar(Window window, @StatusBarMode int statusBarMode) {
         if (window == null) {
             return false;
         }
@@ -105,27 +110,30 @@ public class StatusBarUtil {
 
         switch (osType) {
             case ABOVE_MARSHMALLOW:
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.TRANSPARENT);
+                setStatusBarColor(window, Color.WHITE);
                 setAboveMashMallowStatusBarMode(window, statusBarMode == MODE_LIGHT);
                 return true;
             case MIUI:
-                window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                        WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                setStatusBarColor(window, Color.WHITE);
                 return setMiuiStatusBarMode(window, statusBarMode == MODE_LIGHT);
             case FLYME:
-                window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                        WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                setStatusBarColor(window, Color.WHITE);
                 return setFlymeStatusBarMode(window, statusBarMode == MODE_LIGHT);
             case LOLLIPOP_BELOW_M:
-                window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                        WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                setStatusBarColor(window, Color.GRAY);
                 return true;
             case UNSUPPORTED:
                 return false;
             case UNKNOWN:
             default:
                 return false;
+        }
+    }
+
+    private static void setStatusBarColor(@NonNull Window window, int bgColor) {
+        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(bgColor);
         }
     }
 
@@ -151,14 +159,9 @@ public class StatusBarUtil {
     private static void setAboveMashMallowStatusBarMode(Window window, boolean dark) {
         View decor = window.getDecorView();
         if (dark) {
-            decor.setSystemUiVisibility(
-                    // 这两个flag在6.0及以上系统上可以起到让activity内容延伸至状态栏下方的效果
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            // 这个Flag控制状态栏图标和文字的颜色，设置后为灰色
-                            | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         } else {
-            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            decor.setSystemUiVisibility(0);
         }
     }
 
