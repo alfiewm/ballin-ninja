@@ -41,15 +41,9 @@ public class StatusBarUtil {
         statusBarPaddingView.setBackgroundColor(statusBarBackgroundColor);
         statusBarPaddingView.setVisibility(drawBeneathStatusBar ? View.GONE : View.VISIBLE);
 
-        // 对于6.0及以上系统，需手动将状态栏背景色设置为透明
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Window window = activity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
 
         // 对于无法设置透明状态栏，隐藏paddingView，使用默认的黑色状态栏
-        if (!setTransparentStatusBar(activity, MODE_LIGHT)) {
+        if (!setTransparentStatusBar(activity.getWindow(), MODE_LIGHT)) {
             statusBarPaddingView.setVisibility(View.GONE);
         }
     }
@@ -57,10 +51,10 @@ public class StatusBarUtil {
     /**
      * 初始化动态状态栏，>=LOLLIPOP或者是小米魅族时，activity content会延伸至状态栏下方，需要启用statusBarPaddingView
      */
-    public static void initDynamicStatusBarBg(Activity activity, View statusBarPaddingView,
+    public static void initDynamicStatusBarBg(Window window, View statusBarPaddingView,
             int statusBarMode) {
         setStatusBarPaddingViewHeight(statusBarPaddingView);
-        if (setTransparentStatusBar(activity, statusBarMode)) {
+        if (setTransparentStatusBar(window, statusBarMode)) {
             statusBarPaddingView.setVisibility(View.VISIBLE);
         } else {
             statusBarPaddingView.setVisibility(View.GONE);
@@ -98,10 +92,10 @@ public class StatusBarUtil {
      *
      * @return true表示设置透明状态栏成功，false失败，状态栏icon颜色不保证能设置成功
      */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static boolean setTransparentStatusBar(Activity activity,
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static boolean setTransparentStatusBar(Window window,
             @StatusBarMode int statusBarMode) {
-        if (activity == null || activity.getWindow() == null) {
+        if (window == null) {
             return false;
         }
 
@@ -111,18 +105,20 @@ public class StatusBarUtil {
 
         switch (osType) {
             case ABOVE_MARSHMALLOW:
-                setAboveMashMallowStatusBarMode(activity, statusBarMode == MODE_LIGHT);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(Color.TRANSPARENT);
+                setAboveMashMallowStatusBarMode(window, statusBarMode == MODE_LIGHT);
                 return true;
             case MIUI:
-                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                         WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                return setMiuiStatusBarMode(activity.getWindow(), statusBarMode == MODE_LIGHT);
+                return setMiuiStatusBarMode(window, statusBarMode == MODE_LIGHT);
             case FLYME:
-                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                         WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                return setFlymeStatusBarMode(activity.getWindow(), statusBarMode == MODE_LIGHT);
+                return setFlymeStatusBarMode(window, statusBarMode == MODE_LIGHT);
             case LOLLIPOP_BELOW_M:
-                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                         WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 return true;
             case UNSUPPORTED:
@@ -152,8 +148,8 @@ public class StatusBarUtil {
     // region ABOVE_MARSHMALLOW
 
     @TargetApi(Build.VERSION_CODES.M)
-    private static void setAboveMashMallowStatusBarMode(Activity activity, boolean dark) {
-        View decor = activity.getWindow().getDecorView();
+    private static void setAboveMashMallowStatusBarMode(Window window, boolean dark) {
+        View decor = window.getDecorView();
         if (dark) {
             decor.setSystemUiVisibility(
                     // 这两个flag在6.0及以上系统上可以起到让activity内容延伸至状态栏下方的效果

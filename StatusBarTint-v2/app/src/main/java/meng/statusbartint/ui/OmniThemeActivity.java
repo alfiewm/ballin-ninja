@@ -1,10 +1,13 @@
 package meng.statusbartint.ui;
 
+import android.annotation.TargetApi;
+import android.app.Dialog;
+import android.os.Build;
 import android.view.View;
-import android.widget.Toast;
 
 import meng.statusbartint.R;
 import meng.statusbartint.base.BaseActivity;
+import meng.statusbartint.util.StatusBarUtil;
 
 public class OmniThemeActivity extends BaseActivity {
 
@@ -19,10 +22,27 @@ public class OmniThemeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bg_eh:
-                Toast.makeText(this, "Clicked bg!", Toast.LENGTH_SHORT).show();
+                showDialog();
                 break;
             default:
                 break;
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void showDialog() {
+        final Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.dialog_view);
+        dialog.findViewById(R.id.content).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                dialog.show();
+            }
+        });
+        StatusBarUtil.setTransparentStatusBar(dialog.getWindow(), StatusBarUtil.MODE_LIGHT);
+        dialog.show();
     }
 }
