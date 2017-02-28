@@ -100,7 +100,7 @@ public class StatusBarUtil {
         }
 
         if (osType == OSType.UNKNOWN) {
-            checkOSType();
+            osType = getOSType();
         }
 
         switch (osType) {
@@ -129,19 +129,19 @@ public class StatusBarUtil {
         }
     }
 
-    private static void checkOSType() {
+    private static OSType getOSType() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            osType = OSType.ABOVE_MARSHMALLOW;
+            return OSType.ABOVE_MARSHMALLOW;
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            osType = OSType.UNSUPPORTED;
+            return OSType.UNSUPPORTED;
         } else if (isSupportedMIUI()) {
-            osType = OSType.MIUI;
+            return OSType.MIUI;
         } else if (isSupportedFlyme()) {
-            osType = OSType.FLYME;
+            return OSType.FLYME;
         } else if (Build.VERSION.SDK_INT >= LOLLIPOP) {
-            osType = OSType.LOLLIPOP_BELOW_M;
+            return OSType.LOLLIPOP_BELOW_M;
         } else {
-            osType = OSType.UNSUPPORTED;
+            return OSType.UNSUPPORTED;
         }
     }
 
@@ -257,5 +257,15 @@ public class StatusBarUtil {
             result = resources.getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    /**
+     * 判断系统是否支持透明状态栏
+     */
+    public static boolean supportTransParentStatusBar() {
+        if (osType == OSType.UNKNOWN) {
+            osType = getOSType();
+        }
+        return osType != OSType.UNSUPPORTED;
     }
 }
