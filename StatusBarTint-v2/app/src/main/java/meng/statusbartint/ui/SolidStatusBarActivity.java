@@ -46,7 +46,7 @@ public class SolidStatusBarActivity extends BaseActivity implements View.OnClick
             finish();
         } else if (v.getId() == R.id.switch_status_bar_icon) {
             lightStatusBar = !lightStatusBar;
-            StatusBarUtil.setTransparentStatusBar(getWindow(), lightStatusBar ? StatusBarUtil.MODE_LIGHT : StatusBarUtil.MODE_DARK);
+            StatusBarUtil.setStatusBarMode(getWindow(), lightStatusBar ? StatusBarUtil.MODE_LIGHT : StatusBarUtil.MODE_DARK);
         } else if (v.getId() == R.id.switch_status_bar_color) {
             int color = solid_colors[(index++) % solid_colors.length];
             switchNavBarAndStatusBarBg(color);
@@ -62,11 +62,11 @@ public class SolidStatusBarActivity extends BaseActivity implements View.OnClick
         if (color == Color.WHITE) {
             backBtn.setImageResource(R.drawable.arrow_back_black);
             titleView.setTextColor(Color.BLACK);
-            StatusBarUtil.setTransparentStatusBar(getWindow(), StatusBarUtil.MODE_LIGHT);
+            StatusBarUtil.setStatusBarMode(getWindow(), StatusBarUtil.MODE_LIGHT);
         } else {
             backBtn.setImageResource(R.mipmap.ic_back);
             titleView.setTextColor(Color.WHITE);
-            StatusBarUtil.setTransparentStatusBar(getWindow(), StatusBarUtil.MODE_DARK);
+            StatusBarUtil.setStatusBarMode(getWindow(), StatusBarUtil.MODE_DARK);
         }
         findViewById(R.id.navbar).setBackgroundColor(color);
     }

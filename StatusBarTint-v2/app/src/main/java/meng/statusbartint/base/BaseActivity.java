@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.view.View;
 import android.view.ViewStub;
 
 import meng.statusbartint.R;
@@ -19,13 +18,17 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
+        if (drawBeneathStatusBar()) {
+            setContentView(R.layout.activity_base_no_fit_system_window);
+        } else {
+            setContentView(R.layout.activity_base);
+        }
         ViewStub viewStub = (ViewStub) findViewById(R.id.content);
         viewStub.setLayoutResource(getContentLayoutResId());
         viewStub.inflate();
-        View statusPaddingView = findViewById(R.id.base_status_bar_padding_view);
-        StatusBarUtil.initTransparentStatusBar(this, statusPaddingView, extendsStatusBar(),
-                Color.WHITE);
+        int statusBarColor = StatusBarUtil.supportLightStatusBar() ? Color.WHITE : Color.GRAY;
+        StatusBarUtil.initStatusBar(this, drawBeneathStatusBar(), statusBarColor,
+                StatusBarUtil.MODE_LIGHT);
     }
 
     @LayoutRes
@@ -34,7 +37,7 @@ public abstract class BaseActivity extends Activity {
     /**
      * 内容是否需要延伸至状态栏下面
      */
-    protected boolean extendsStatusBar() {
+    protected boolean drawBeneathStatusBar() {
         return false;
     }
 }

@@ -42,7 +42,7 @@ public class OmniThemeActivity extends BaseActivity {
                 dialog.show();
             }
         });
-        StatusBarUtil.setTransparentStatusBar(dialog.getWindow(), StatusBarUtil.MODE_LIGHT);
+        StatusBarUtil.setLightTransparentStatusBar(dialog.getWindow());
         dialog.show();
     }
 }

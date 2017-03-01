@@ -15,7 +15,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
-    protected boolean extendsStatusBar() {
+    protected boolean drawBeneathStatusBar() {
         return true;
     }
 
