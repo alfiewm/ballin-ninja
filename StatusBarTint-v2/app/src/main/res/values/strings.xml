@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StatusBarTint</string>
+    <drawable name="dialog_background_transparent">@android:color/transparent</drawable>
 </resources>

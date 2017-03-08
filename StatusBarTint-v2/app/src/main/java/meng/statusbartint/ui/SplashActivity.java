@@ -29,6 +29,12 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void run() {
                 ehImageView.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 2000);
             }
         }, 2000);
     }
