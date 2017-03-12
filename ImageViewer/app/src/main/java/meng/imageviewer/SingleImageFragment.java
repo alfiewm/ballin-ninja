@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.io.File;
+
 import meng.imageviewer.imageview.ImageProvider;
 import meng.imageviewer.imageview.ImageSource;
 import meng.imageviewer.imageview.ImageThumbnail;
@@ -157,7 +159,7 @@ public class SingleImageFragment extends Fragment {
         if (thumbnail.getBitmap() != null) {
             thumbView.setImageBitmap(thumbnail.getBitmap());
         } else if (!TextUtils.isEmpty(thumbnail.getLocalPath())) {
-            Picasso.with(getActivity()).load(thumbnail.getLocalPath()).into(thumbView);
+            Picasso.with(getActivity()).load(new File(thumbnail.getLocalPath())).into(thumbView);
         } else {
             thumbView.setVisibility(View.GONE);
         }

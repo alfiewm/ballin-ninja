@@ -55,8 +55,8 @@ class UrlsImageProvider implements ImageProvider {
 
     @Override
     public ImageThumbnail getThumbnail(int index) {
-        return new ImageThumbnail(
-                "file:///storage/emulated/0/Pictures/Tumblr/IMG_~0" + 4 + ".jpg", null);
+        // 如果url中#，直接将url传给picasso会加载失败，需要new File()在传进去，坑爹
+        return new ImageThumbnail("/storage/emulated/0/Pictures/Tumblr/IMG_~0#4.jpg", null);
     }
 
     @Override
