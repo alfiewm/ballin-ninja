@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="NewWayBinding">
+
+        <import type="android.view.View" />
+
+        <variable
+            name="user"
+            type="meng.db.data.User" />
+
+        <variable
+            name="presenter"
+            type="meng.db.NewWayActivity" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text='@{"FullName: " + user.firstName + " " + user.middleName + " " + user.lastName}'
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/first_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/log"
+            android:onClick="@{presenter::onFirstNameClicks}"
+            android:text="@{user.firstName}"
+            android:textSize="70sp"
+            app:font='@{"rm_albion"}'
+            tools:text="Muffin" />
+
+        <EditText
+            android:id="@+id/middle_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/first_name"
+            android:layout_below="@id/first_name"
+            android:text="@={user.middleName}"
+            android:textSize="30sp"
+            tools:text="Mia" />
+
+        <TextView
+            android:id="@+id/last_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/middle_name"
+            android:layout_below="@id/middle_name"
+            android:onClick="@{(view)->presenter.onLastNameClick(view, user)}"
+            android:text="@{user.lastName}"
+            android:textSize="90sp"
+            app:font="@{`rm_albion`}"
+            tools:text="Knight" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/log"
+            android:text="Show Avatar"
+            app:onCheckedChangeListener="@{(cb, isChecked)->presenter.onUserCheckChanged(user, isChecked)}" />
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/checkbox"
+            android:scaleType="centerCrop"
+            android:visibility="@{checkbox.checked ? View.VISIBLE : View.GONE}"
+            app:imageUrl="@{user.avatar}" />
+    </RelativeLayout>
+</layout>

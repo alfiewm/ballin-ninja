@@ -14,14 +14,14 @@ except ImportError:
 def get_text_or_empty(val):
     return val.text if val is not None else ""
 
-def appendWs(ws, cjhm, je, se, jshj, kprq, fpzt):
+def appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, absPath):
     date = formatDate(kprq)
     year = extractYear(date)
     month = extractMonth(date)
     if jshj is None or jshj is "":
-        ws.append([year, month, cjhm, float(je), float(se), float(je) + float(se), date, fpzt])
+        ws.append([year, month, cjhm, float(je), float(se), float(je) + float(se), date, fpzt, absPath])
     else:
-        ws.append([year, month, cjhm, toFloat(je), toFloat(se), float(jshj), date, fpzt])
+        ws.append([year, month, cjhm, toFloat(je), toFloat(se), float(jshj), date, fpzt, absPath])
 
 def toFloat(val):
     return float(val) if val is not None and val is not "" else ""
@@ -40,7 +40,7 @@ def extractMonth(val):
     return val[5:7] + u"月"
 
 # business/body
-def process(ws, content):
+def process(ws, content, absPath):
     content = content.decode('GB18030').encode('utf-8')
     content = content.replace('encoding="gbk"', 'encoding="utf-8"')
     dom = ET.fromstring(content)
@@ -55,31 +55,34 @@ def process(ws, content):
         jshj = get_text_or_empty(body.find('jshj'))
         kprq = get_text_or_empty(body.find('kprq'))
         fpzt = get_text_or_empty(body.find('fpzt'))
+        if fpzt == "":
+            fpzt = get_text_or_empty(body.find('yhzcbs'))
         if cjhm is None or len(cjhm) != 17:
             print "skiped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt
             continue
-        appendWs(ws, cjhm, je, se, jshj, kprq, fpzt)
+        appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, absPath)
         count = count + 1
     return count
 
 # taxML
-def processTAXML(ws, content):
+def processTAXML(ws, content, absPath):
     content = content.decode('GB18030').encode('utf-8').replace('encoding="GBK"', 'encoding="utf-8"')
     soup = BeautifulSoup(content, "lxml")
     clsbdhList = soup.find_all("clsbdh")
     jshjList = soup.find_all("jshj")
     kprqList = soup.find_all("kprq")
+    fpbzList = soup.find_all("fpbz")
     count = 0
-    for (clsbdh, jshj, kprq) in zip(clsbdhList, jshjList, kprqList):
+    for (clsbdh, jshj, kprq, fpbz) in zip(clsbdhList, jshjList, kprqList, fpbzList):
         if clsbdh.string is None or len(clsbdh.string) != 17:
-            print "skiped empty invoice. ", clsbdh.string, jshj.string, kprq.string
+            print "skiped empty invoice. ", clsbdh.string, jshj.string, kprq.string, fpbz.string
             continue
-        appendWs(ws, clsbdh.string, "", "", jshj.string, kprq.string, "")
+        appendWs(ws, clsbdh.string, "", "", jshj.string, kprq.string, fpbz.string, absPath)
         count = count + 1
     return count
 
 # lzsc.xml & tssf.xml
-def processExcelSheet(ws, fileContent):
+def processExcelSheet(ws, fileContent, absPath):
     soup = BeautifulSoup(fileContent, 'lxml')
     index = 0
     cjhmIndex = -1
@@ -132,7 +135,7 @@ def processExcelSheet(ws, fileContent):
             if cjhm is None or cjhm == "" or len(cjhm) != 17:
                 print "skiped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt
                 continue
-            appendWs(ws, cjhm, je, se, jshj, kprq, fpzt)
+            appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, absPath)
             count += 1
         return count
 
@@ -143,8 +146,8 @@ if __name__ == '__main__':
     wb = Workbook()
     ws = wb.active
     ws.title = "xml"
-    ws.append(["年", "月", "车架号码", "价格", "税额", "价税合计", "开票日期", "发票状态"])
-    let totalCount = 0
+    ws.append(["年", "月", "车架号码", "价格", "税额", "价税合计", "开票日期", "发票状态", "路径"])
+    totalCount = 0
     for root, dirs, files in os.walk("."):
         for name in files:
             absPath = root + "/" + name
@@ -152,15 +155,16 @@ if __name__ == '__main__':
                 continue
             content = open(absPath, 'rb').read()
             print "processing " + absPath
+            count = 0
             # ws.append([absPath])
             if content.find("Excel.Sheet") != -1:
-                count = processExcelSheet(ws, content)
+                count = processExcelSheet(ws, content, absPath)
             elif content.find("taxML") != -1:
-                count = processTAXML(ws, content)
+                count = processTAXML(ws, content, absPath)
             else:
-                count = process(ws, content)
+                count = process(ws, content, absPath)
             totalCount += count
-            print "####### added " + count " items!!!"
-    print "------------ tatal count = " + totalCount
+            print " ####### added ", count, " items.", absPath
+    print "------------ tatal count = " , totalCount
     wb.save('output.xlsx')
     os.system("open output.xlsx")
