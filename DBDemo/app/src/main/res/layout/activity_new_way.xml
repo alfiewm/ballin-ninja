@@ -57,7 +57,7 @@
             android:layout_below="@id/middle_name"
             android:onClick="@{(view)->presenter.onLastNameClick(view, user)}"
             android:text="@{user.lastName}"
-            android:textSize="90sp"
+            android:textSize="@{@dimen/name_size}"
             app:font="@{`rm_albion`}"
             tools:text="Knight" />
 
