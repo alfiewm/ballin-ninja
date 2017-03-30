@@ -79,5 +79,11 @@
             android:scaleType="centerCrop"
             android:visibility="@{checkbox.checked ? View.VISIBLE : View.GONE}"
             app:imageUrl="@{user.avatar}" />
+
+        <ViewStub
+            android:id="@+id/view_stub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/avatar" />
     </RelativeLayout>
 </layout>

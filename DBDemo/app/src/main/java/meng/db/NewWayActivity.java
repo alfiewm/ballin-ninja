@@ -4,10 +4,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.Toast;
 
 import meng.db.data.User;
 import meng.db.databinding.NewWayBinding;
+import meng.db.databinding.StubLayoutBinding;
 import meng.db.utils.MyComponent;
 
 public class NewWayActivity extends AppCompatActivity {
@@ -23,9 +25,20 @@ public class NewWayActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_way, new MyComponent());
         binding.setUser(user);
         binding.setPresenter(this);
+        binding.viewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
+            @Override
+            public void onInflate(ViewStub stub, View inflated) {
+                StubLayoutBinding stubBinding = DataBindingUtil.bind(inflated);
+                stubBinding.someText.setText("Who Is This GUY?!");
+            }
+        });
     }
 
     public void onFirstNameClicks(View v) {
+        if (!binding.viewStub.isInflated()) {
+            binding.viewStub.getViewStub().setLayoutResource(R.layout.stub_layout);
+            binding.viewStub.getViewStub().inflate();
+        }
         // handle click
         Toast.makeText(this, "First Name Clicked", Toast.LENGTH_SHORT).show();
     }
