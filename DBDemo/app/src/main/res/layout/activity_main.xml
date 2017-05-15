@@ -8,6 +8,10 @@
         <variable
             name="user"
             type="meng.db.data.User" />
+
+        <variable
+            name="handler"
+            type="meng.db.MainActivity" />
     </data>
 
     <RelativeLayout
@@ -54,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/lastName"
             android:layout_below="@id/lastName"
+            android:onClick="@{()->handler.onOldWayClicked()}"
             android:text="Old WAY" />
 
         <Button
@@ -62,6 +67,16 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/lastName"
             android:layout_below="@id/old_way_button"
+            android:onClick="@{()->handler.onNewWayClicked()}"
             android:text="New Way" />
+
+        <Button
+            android:id="@+id/pull_refresh_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lastName"
+            android:layout_below="@id/new_way_button"
+            android:onClick="@{()->handler.onPRClicked()}"
+            android:text="Pull Refresh Test" />
     </RelativeLayout>
 </layout>

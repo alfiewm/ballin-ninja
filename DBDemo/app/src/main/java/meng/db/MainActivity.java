@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         user = new User("Muffin", "Knight", "https://unsplash.it/300?image=4");
         binding.setUser(user);
+        binding.setHandler(this);
         binding.firstName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -29,17 +30,17 @@ public class MainActivity extends AppCompatActivity {
                 user.setLastName("Frost");
             }
         });
-        binding.oldWayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, OldWayActivity.class));
-            }
-        });
-        binding.newWayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NewWayActivity.class));
-            }
-        });
+    }
+
+    public void onOldWayClicked() {
+        startActivity(new Intent(MainActivity.this, OldWayActivity.class));
+    }
+
+    public void onNewWayClicked() {
+        startActivity(new Intent(MainActivity.this, NewWayActivity.class));
+    }
+
+    public void onPRClicked() {
+        startActivity(new Intent(MainActivity.this, PullRefreshActivity.class));
     }
 }

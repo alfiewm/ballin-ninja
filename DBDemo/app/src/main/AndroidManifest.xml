@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".OldWayActivity" />
         <activity android:name=".NewWayActivity" />
-        <activity android:name=".ButterKnifeActivity"></activity>
+        <activity android:name=".ButterKnifeActivity" />
+        <activity android:name=".PullRefreshActivity"></activity>
     </application>
 
 </manifest>

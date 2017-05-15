@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Copyright 2012 fenbi.com. All rights reserved.
+  ~  * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+  ~  */
+  -->
+
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+        android:fromDegrees="0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toDegrees="360">
+
+    <shape
+        android:shape="ring"
+        android:thickness="2dip"
+        android:useLevel="false">
+        <gradient
+            android:centerColor="#FFFFFF"
+            android:centerY="0.50"
+            android:endColor="#888888"
+            android:startColor="#dcdcdc"
+            android:type="sweep"
+            android:useLevel="false"/>
+    </shape>
+
+</rotate>
