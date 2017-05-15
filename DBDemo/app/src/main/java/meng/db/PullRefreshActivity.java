@@ -1,35 +1,36 @@
 package meng.db;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
+import android.view.View;
 
-import meng.db.widget.ListView;
+import meng.db.widget.ptr.PtrFrameLayout;
+import meng.db.widget.ptr.PtrHandler;
 
 public class PullRefreshActivity extends AppCompatActivity {
 
-    ListView listView;
+    PtrFrameLayout ptrFrame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pull_refresh);
-        listView = (ListView) findViewById(R.id.root);
-        listView.setCanRefresh(true);
-        listView.setOnRefreshListener(new ListView.OnRefreshListener() {
+        ptrFrame = (PtrFrameLayout) findViewById(R.id.root);
+        ptrFrame.setPtrHandler(new PtrHandler() {
             @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return true;
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                frame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        listView.onRefreshComplete();
+                        ptrFrame.refreshComplete();
                     }
                 }, 1000);
             }
         });
-        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, names));
     }
-
-    private String[] names = {"Li Lei", "Han Meimei"};
 }

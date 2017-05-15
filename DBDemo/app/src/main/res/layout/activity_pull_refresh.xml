@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<meng.db.widget.ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<meng.db.widget.ptr.PtrTutorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="meng.db.PullRefreshActivity">
 
-</meng.db.widget.ListView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="PULL TO REFRESH CONTENT" />
+
+</meng.db.widget.ptr.PtrTutorLayout>
