@@ -14,14 +14,14 @@ except ImportError:
 def get_text_or_empty(val):
     return val.text if val is not None else ""
 
-def appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, absPath):
+def appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, ghdw, absPath):
     date = formatDate(kprq)
     year = extractYear(date)
     month = extractMonth(date)
     if jshj is None or jshj is "":
-        ws.append([year, month, cjhm, float(je), float(se), float(je) + float(se), date, fpzt, absPath])
+        ws.append([year, month, ghdw, cjhm, float(je), float(se), float(je) + float(se), date, fpzt, absPath])
     else:
-        ws.append([year, month, cjhm, toFloat(je), toFloat(se), float(jshj), date, fpzt, absPath])
+        ws.append([year, month, ghdw, cjhm, toFloat(je), toFloat(se), float(jshj), date, fpzt, absPath])
 
 def toFloat(val):
     return float(val) if val is not None and val is not "" else ""
@@ -47,6 +47,9 @@ def process(ws, content, absPath):
     elements = dom.findall('./body')
     count = 0
     for body in elements:
+        ghdw = get_text_or_empty(body.find('ghdw'))
+        if ghdw is "":
+            ghdw = get_text_or_empty(body.find('gfdwmc'))
         cjhm = get_text_or_empty(body.find('clsbdh'))
         if cjhm is "":
             cjhm = get_text_or_empty(body.find('cjhm'))
@@ -60,7 +63,7 @@ def process(ws, content, absPath):
         if cjhm is None or len(cjhm) != 17:
             print "skiped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt
             continue
-        appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, absPath)
+        appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, ghdw, absPath)
         count = count + 1
     return count
 
@@ -72,12 +75,13 @@ def processTAXML(ws, content, absPath):
     jshjList = soup.find_all("jshj")
     kprqList = soup.find_all("kprq")
     fpbzList = soup.find_all("fpbz")
+    ghdwList = soup.find_all("ghdw")
     count = 0
-    for (clsbdh, jshj, kprq, fpbz) in zip(clsbdhList, jshjList, kprqList, fpbzList):
+    for (clsbdh, jshj, kprq, fpbz, ghdw) in zip(clsbdhList, jshjList, kprqList, fpbzList, ghdwList):
         if clsbdh.string is None or len(clsbdh.string) != 17:
             print "skiped empty invoice. ", clsbdh.string, jshj.string, kprq.string, fpbz.string
             continue
-        appendWs(ws, clsbdh.string, "", "", jshj.string, kprq.string, fpbz.string, absPath)
+        appendWs(ws, clsbdh.string, "", "", jshj.string, kprq.string, fpbz.string, ghdw.string, absPath)
         count = count + 1
     return count
 
@@ -91,6 +95,7 @@ def processExcelSheet(ws, fileContent, absPath):
     kprqIndex = -1
     jshjIndex = -1
     fpztIndex = -1
+    ghdwIndex = -1
     count = 0
     for item in soup.find_all('row'):
         cellList = item.find_all('cell')
@@ -112,6 +117,8 @@ def processExcelSheet(ws, fileContent, absPath):
                     jshjIndex = idx
                 elif title == "fpzt" or title == u"发票状态" or title == "ns1:fpzt":
                     fpztIndex = idx
+                elif title == "ghdw" or title == u"购货单位" or title == "ns1:ghdw":
+                    ghdwIndex = idx
             # print cjhmIndex , " " , jeIndex , " " , seIndex , " " , kprqIndex , " " , jshjIndex , " " , fpztIndex
         else:
             cjhm = ""
@@ -120,6 +127,7 @@ def processExcelSheet(ws, fileContent, absPath):
             jshj = ""
             fpzt = ""
             kprq = ""
+            ghdw = ""
             if cjhmIndex > -1:
                 cjhm = cell_string(cellList[cjhmIndex])
             if jeIndex > -1:
@@ -132,10 +140,12 @@ def processExcelSheet(ws, fileContent, absPath):
                 jshj = cell_string(cellList[jshjIndex])
             if fpztIndex > -1:
                 fpzt = cell_string(cellList[fpztIndex])
+            if ghdwIndex > -1:
+                ghdw = cell_string(cellList[ghdwIndex])
             if cjhm is None or cjhm == "" or len(cjhm) != 17:
-                print "skiped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt
+                print "skiped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt, ghdw
                 continue
-            appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, absPath)
+            appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, ghdw, absPath)
             count += 1
         return count
 
@@ -146,7 +156,7 @@ if __name__ == '__main__':
     wb = Workbook()
     ws = wb.active
     ws.title = "xml"
-    ws.append(["年", "月", "车架号码", "价格", "税额", "价税合计", "开票日期", "发票状态", "路径"])
+    ws.append(["年", "月", "客户姓名", "车架号码", "价格", "税额", "价税合计", "开票日期", "发票状态", "路径"])
     totalCount = 0
     for root, dirs, files in os.walk("."):
         for name in files:
