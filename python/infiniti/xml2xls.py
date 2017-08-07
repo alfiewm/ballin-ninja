@@ -39,10 +39,24 @@ def extractYear(val):
 def extractMonth(val):
     return val[5:7] + u"月"
 
+def cell_string(cell):
+    return cell.text
+
+logFile = ""
+def log(*logtxt):
+    print(*logtxt)
+    print(*logtxt, file=logFile)
+
+def loge(*logtxt):
+    log("Error:", *logtxt)
+
+def logw(*logtxt):
+    log("Warning:", *logtxt)
+
 # business/body
 def process(ws, content, absPath):
     content = content.decode('GB18030').encode('utf-8')
-    content = content.replace('encoding="gbk"', 'encoding="utf-8"')
+    content = content.replace(b'encoding="gbk"', b'encoding="utf-8"')
     dom = ET.fromstring(content)
     elements = dom.findall('./body')
     count = 0
@@ -61,7 +75,7 @@ def process(ws, content, absPath):
         if fpzt == "":
             fpzt = get_text_or_empty(body.find('yhzcbs'))
         if cjhm is None or len(cjhm) != 17:
-            print "skiped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt
+            logw("skipped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt, absPath)
             continue
         appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, ghdw, absPath)
         count = count + 1
@@ -69,7 +83,7 @@ def process(ws, content, absPath):
 
 # taxML
 def processTAXML(ws, content, absPath):
-    content = content.decode('GB18030').encode('utf-8').replace('encoding="GBK"', 'encoding="utf-8"')
+    # content = content.decode('GB18030').encode('utf-8').replace('encoding="GBK"', 'encoding="utf-8"')
     soup = BeautifulSoup(content, "lxml")
     clsbdhList = soup.find_all("clsbdh")
     jshjList = soup.find_all("jshj")
@@ -79,7 +93,7 @@ def processTAXML(ws, content, absPath):
     count = 0
     for (clsbdh, jshj, kprq, fpbz, ghdw) in zip(clsbdhList, jshjList, kprqList, fpbzList, ghdwList):
         if clsbdh.string is None or len(clsbdh.string) != 17:
-            print "skiped empty invoice. ", clsbdh.string, jshj.string, kprq.string, fpbz.string
+            logw("skipped empty invoice. ", clsbdh.string, jshj.string, kprq.string, fpbz.string, absPath)
             continue
         appendWs(ws, clsbdh.string, "", "", jshj.string, kprq.string, fpbz.string, ghdw.string, absPath)
         count = count + 1
@@ -143,14 +157,11 @@ def processExcelSheet(ws, fileContent, absPath):
             if ghdwIndex > -1:
                 ghdw = cell_string(cellList[ghdwIndex])
             if cjhm is None or cjhm == "" or len(cjhm) != 17:
-                print "skiped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt, ghdw
+                logw("skipped empty invoice. ", cjhm, je, se, jshj, kprq, fpzt, ghdw, absPath)
                 continue
             appendWs(ws, cjhm, je, se, jshj, kprq, fpzt, ghdw, absPath)
             count += 1
         return count
-
-def cell_string(cell):
-    return cell.text
 
 if __name__ == '__main__':
     wb = Workbook()
@@ -158,23 +169,33 @@ if __name__ == '__main__':
     ws.title = "xml"
     ws.append(["年", "月", "客户姓名", "车架号码", "价格", "税额", "价税合计", "开票日期", "发票状态", "路径"])
     totalCount = 0
-    for root, dirs, files in os.walk("."):
+    if len(sys.argv) == 2:
+        workpath = sys.argv[1]
+    else:
+        workpath = "."
+    logFile = open(workpath + "/log.txt", "w+")
+    for root, dirs, files in os.walk(workpath):
         for name in files:
             absPath = root + "/" + name
             if not absPath.endswith(".xml"):
                 continue
             content = open(absPath, 'rb').read()
-            print "processing " + absPath
             count = 0
-            # ws.append([absPath])
-            if content.find("Excel.Sheet") != -1:
-                count = processExcelSheet(ws, content, absPath)
-            elif content.find("taxML") != -1:
-                count = processTAXML(ws, content, absPath)
-            else:
-                count = process(ws, content, absPath)
-            totalCount += count
-            print " ####### added ", count, " items.", absPath
-    print "------------ tatal count = " , totalCount
-    wb.save('output.xlsx')
-    os.system("open output.xlsx")
+            try:
+                if content.find(b'Excel.Sheet') != -1:
+                    count = processExcelSheet(ws, content, name)
+                elif content.find(b'taxML') != -1:
+                    count = processTAXML(ws, content, name)
+                else:
+                    count = process(ws, content, name)
+                totalCount += count
+                if count == 0:
+                    logw("added 0 items.", absPath)
+                else:
+                    log("added ", count, " items.", name)
+            except:
+                loge("parse xml file error.", absPath)
+
+    log("------------ tatal count =" , totalCount)
+    wb.save(workpath + '/output.xlsx')
+#    os.system("open " + workpath + "/output.xlsx")
