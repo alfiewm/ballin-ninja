@@ -52,4 +52,12 @@
         android:onClick="onClick"
         android:text="切换状态栏图标背景及图标及导航栏（Android>=5.0)" />
 
+    <Button
+        android:id="@+id/btn_pop_window"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="onClick"
+        android:text="测试popupWindow" />
+
 </LinearLayout>

@@ -3,12 +3,17 @@ package meng.statusbartint.ui;
 import static meng.statusbartint.R.id.back_btn;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -46,11 +51,35 @@ public class SolidStatusBarActivity extends BaseActivity implements View.OnClick
             finish();
         } else if (v.getId() == R.id.switch_status_bar_icon) {
             lightStatusBar = !lightStatusBar;
-            StatusBarUtil.setStatusBarMode(getWindow(), lightStatusBar ? StatusBarUtil.MODE_LIGHT : StatusBarUtil.MODE_DARK);
+            StatusBarUtil.setStatusBarMode(getWindow(),
+                    lightStatusBar ? StatusBarUtil.MODE_LIGHT : StatusBarUtil.MODE_DARK);
         } else if (v.getId() == R.id.switch_status_bar_color) {
             int color = solid_colors[(index++) % solid_colors.length];
             switchNavBarAndStatusBarBg(color);
+        } else if (v.getId() == R.id.btn_pop_window) {
+            popWindow();
         }
+    }
+
+    private void popWindow() {
+        final View popView = LayoutInflater.from(this).inflate(R.layout.view_popup, null, false);
+
+        final PopupWindow popupWindow = new PopupWindow(popView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        View groundView = popView.findViewById(R.id.pop_root);
+        groundView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(0);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        popupWindow.showAtLocation(backBtn, Gravity.CENTER, 0, 0);
     }
 
     private void switchNavBarAndStatusBarBg(int color) {
