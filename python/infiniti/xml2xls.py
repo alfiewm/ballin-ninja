@@ -173,7 +173,7 @@ if __name__ == '__main__':
         workpath = sys.argv[1]
     else:
         workpath = "."
-    logFile = open(workpath + "/log.txt", "w+")
+    logFile = open(workpath + "/log.txt", "w+", newline="\r\n")
     for root, dirs, files in os.walk(workpath):
         for name in files:
             absPath = root + "/" + name
