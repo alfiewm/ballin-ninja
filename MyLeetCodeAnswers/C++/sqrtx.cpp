@@ -27,7 +27,7 @@ public:
 };
 
 // my solution, 没有用乘法，但是TLE了。。。
-class Solution {
+class SolutionM {
 public:
     int sqrt(int x) {
         assert(x>=0);
